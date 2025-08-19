@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Classifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px;
+        }
+        .container {
+            background:white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="file"] {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        .predictions {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .predictions ul {
+            list-style: none;
+            padding: 0;
+        }
+        .predictions li {
+            background: #f1f5f9;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .preview {
+            margin-top: 20px;
+        }
+        .preview img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Classifier</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <br>
+            <button type="submit">Upload & Predict</button>
+        </form>
+
+        {% if image_file %}
+        <div class="preview">
+            <h2>Uploaded Image:</h2>
+            <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Uploaded Image">
+        </div>
+        {% endif %}
+
+        {% if predictions %}
+        <div class="predictions">
+            <h2>Top Predictions:</h2>
+            <ul>
+                {% for label, percent in predictions %}
+                <li>{{ label }}: {{ percent }}%</li>
+                {% endfor %}
+            </ul>
+            
+        </div>
+        {% endif %}
+    </div>
+    <!-- Clear Button -->
+<br>
+<button type="button" onclick="clearPage()">Clear</button>
+<script>
+    function clearPage() {
+      const fileInput = document.querySelector('input[type="file"]');
+      const preview = document.querySelector('.preview');
+      const predictions = document.querySelector('.predictions');
+  
+      if (fileInput) fileInput.value = "";
+      if (preview) preview.style.display = "none";
+      if (predictions) predictions.style.display = "none";
+    }
+  </script>
+  
+</body>
+</html>
